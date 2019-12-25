@@ -2,11 +2,11 @@ package com.mp.stockscanner.scanner.ui;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.mp.stockscanner.R;
+import com.mp.stockscanner.base.BaseAppCompactActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseAppCompactActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
