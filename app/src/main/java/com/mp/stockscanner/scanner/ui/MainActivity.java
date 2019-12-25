@@ -1,10 +1,10 @@
-package com.mp.stockscanner;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.mp.stockscanner.scanner.ui;
 
 import android.os.Bundle;
 
-import com.mp.stockscanner.ui.main.MainFragment;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.mp.stockscanner.R;
 
 public class MainActivity extends AppCompatActivity {
 
