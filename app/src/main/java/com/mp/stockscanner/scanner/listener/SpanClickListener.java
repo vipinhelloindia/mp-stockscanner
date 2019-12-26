@@ -1,4 +1,4 @@
-package com.mp.stockscanner.scanner;
+package com.mp.stockscanner.scanner.listener;
 
 import com.mp.stockscanner.models.Variable;
 

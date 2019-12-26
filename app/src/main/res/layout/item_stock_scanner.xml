@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:background="@color/colorBackground">
+
+    <ImageView
+        android:id="@+id/im_dot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="8dp"
+        android:contentDescription="Dot Image"
+        app:srcCompat="@drawable/circle_bg" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/im_dot"
+        android:gravity="start|top"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        tools:text="Top Gainers" />
+
+    <TextView
+        android:id="@+id/tv_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/im_dot"
+        android:fontFamily="sans-serif-light"
+        android:gravity="start|top"
+        android:textColor="@color/greenTextColor"
+        android:textSize="12sp"
+        tools:text="Intraday Bullish" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="14dp"
+        android:layout_below="@id/tv_tag"
+        android:background="@drawable/dottedline" />
+</RelativeLayout>

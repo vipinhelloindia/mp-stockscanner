@@ -6,6 +6,7 @@
     <color name="colorBackground">#00121c</color>
     <color name="spanTextColor">#3463a7</color>
     <color name="greenTextColor">#01C404</color>
+    <color name="whiteTextColor">@android:color/white</color>
     <color name="redTextColor">#ff041d</color>
     <color name="dotColor">#ca333333</color>
     <color name="selectedColor">#0081b3</color>

@@ -1,7 +1,8 @@
 package com.mp.stockscanner.di.app;
 
 
-import com.mp.stockscanner.scanner.ui.MainFragment;
+import com.mp.stockscanner.di.module.MpScannerRepoModule;
+import com.mp.stockscanner.scanner.ui.StockListingFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -9,6 +10,6 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class FragmentModule {
 
-    @ContributesAndroidInjector
-    abstract MainFragment contributeMainFragment();
+    @ContributesAndroidInjector(modules = MpScannerRepoModule.class)
+    abstract StockListingFragment contributeMainFragment();
 }

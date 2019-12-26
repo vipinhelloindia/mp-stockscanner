@@ -11,17 +11,16 @@ import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
-import dagger.android.support.AndroidSupportInjectionModule;
+import dagger.android.AndroidInjectionModule;
 
 
-@Component(modules = {AndroidSupportInjectionModule.class,
+@Component(modules = {AndroidInjectionModule.class,
         AppModule.class,
         RxJavaModule.class,
         RetrofitModule.class,
         NetworkModule.class,
         ActivityModule.class,
         FragmentModule.class,
-        ViewModelModule.class,
         MpScannerRepoModule.class
 
 })

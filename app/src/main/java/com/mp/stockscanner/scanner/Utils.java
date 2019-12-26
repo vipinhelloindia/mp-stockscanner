@@ -4,10 +4,14 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.mp.stockscanner.R;
+import com.mp.stockscanner.models.Criterium;
 import com.mp.stockscanner.models.Variable;
+import com.mp.stockscanner.scanner.listener.SpanClickListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,9 +21,8 @@ final public class Utils {
 
     }
 
-
-    public static SpannableStringBuilder getBuilder(String text, HashMap<String, Variable> variableHashMap,
-                                                    SpanClickListener spanClickListener) {
+    private static SpannableStringBuilder getBuilder(String text, HashMap<String, Variable> variableHashMap,
+                                                     SpanClickListener spanClickListener) {
         SpanableData spanableData = getSpanableData(text);
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(spanableData.modifiedText);
         for (SpanableData.SpannableIndex spannableIndex : spanableData.spannableIndices) {
@@ -31,6 +34,45 @@ final public class Utils {
         }
 
         return spannableStringBuilder;
+    }
+
+    public static void setText(TextView textView, String value) {
+        if (value != null && value.length() > 0) {
+            textView.setText(value);
+            return;
+        }
+        textView.setText("");
+
+    }
+
+    public static void setTextColor(TextView textView, String color) {
+        try {
+            int textColor = textView.getContext().getResources().getColor(ColorType.valueOf(color).textColor);
+            textView.setTextColor(textColor);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void setSpanable(TextView nameView, Criterium stockScanner, SpanClickListener spanClickListener) {
+        SpannableStringBuilder spannableStringBuilder = getBuilder(stockScanner.getText(), stockScanner.getVariable(), spanClickListener);
+        nameView.setText(spannableStringBuilder);
+    }
+
+    public enum ColorType {
+
+        green("Green Color", R.color.greenTextColor),
+        red("Red Color", R.color.redTextColor),
+        white("White Default", R.color.whiteTextColor);
+
+        private String color;
+        private Integer textColor;
+
+        ColorType(String color, Integer textColor) {
+            this.color = color;
+            this.textColor = textColor;
+        }
     }
 
     public static final class ClickableSpanListener extends ClickableSpan {
@@ -59,6 +101,10 @@ final public class Utils {
         StringBuilder stringBuilder = new StringBuilder();
         int startIndex = 0;
         int endIndex = 0;
+        if (!text.contains("$")) {
+            spanableData.modifiedText = text;
+            return spanableData;
+        }
         while (true) {
             int tempStartIndex = startIndex;
             startIndex = text.indexOf("$", startIndex);
@@ -79,8 +125,8 @@ final public class Utils {
                         stringBuilder.append(key);
                         stringBuilder.append(")");
                         SpanableData.SpannableIndex spannableIndex = new SpanableData.SpannableIndex();
-                        spannableIndex.start = startIndex - 1;
-                        spannableIndex.end = tempIndex + 1;
+                        spannableIndex.start = startIndex + spanableData.spannableIndices.size();
+                        spannableIndex.end = tempIndex + 2;
                         spannableIndex.key = key;
                         spanableData.spannableIndices.add(spannableIndex);
 

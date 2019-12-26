@@ -1,7 +1,7 @@
 package com.mp.stockscanner.di.app;
 
 
-import com.mp.stockscanner.scanner.ui.MainActivity;
+import com.mp.stockscanner.scanner.ui.StockScannerListingActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -10,5 +10,5 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class ActivityModule {
 
     @ContributesAndroidInjector
-    abstract MainActivity contributeMainActivity();
+    abstract StockScannerListingActivity contributeMainActivity();
 }

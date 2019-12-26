@@ -51,4 +51,16 @@ public class Criterium implements Parcelable {
             return new Criterium[size];
         }
     };
+
+    public String getType() {
+        return type;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public HashMap<String, Variable> getVariable() {
+        return variable;
+    }
 }
