@@ -132,4 +132,7 @@ public class Variable implements Parcelable {
         return 0;
     }
 
+    public void setValues(List<Double> doubles) {
+        this.values = doubles;
+    }
 }

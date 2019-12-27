@@ -109,7 +109,7 @@ final public class Utils {
     }
 
 
-    private static SpanableData getSpanableData(String text, HashMap<String, Variable> variableHashMap) {
+    public static SpanableData getSpanableData(String text, HashMap<String, Variable> variableHashMap) {
         SpanableData spanableData = new SpanableData();
         spanableData.spannableIndices = new ArrayList<>();
         StringBuilder stringBuilder = new StringBuilder();
@@ -186,8 +186,8 @@ final public class Utils {
         spanableData.spannableIndices.add(spannableIndex);
     }
 
-    static class SpanableData {
-        String modifiedText;
+    public static class SpanableData {
+        public String modifiedText;
         ArrayList<SpannableIndex> spannableIndices;
 
         static class SpannableIndex {
