@@ -12,13 +12,15 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
 
+;
+
 @Module
 public abstract class MpScannerRepoModule {
     @Binds
-    abstract MpScannerRepository getCharacterRepositoryManager(MpScannerRepositoryImpl mpScannerRepository);
+    abstract MpScannerRepository getScannerRepositoryManager(MpScannerRepositoryImpl mpScannerRepository);
 
     @Binds
     @IntoMap
     @ViewModelKey(MainViewModel.class)
-    protected abstract ViewModel requestViewModel(MainViewModel mainViewModel);
+    protected abstract ViewModel requestMainViewModel(MainViewModel mainViewModel);
 }

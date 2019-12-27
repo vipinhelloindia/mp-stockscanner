@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorBackground">#00121c</color>
-    <color name="spanTextColor">#3463a7</color>
+    <color name="spanTextColor">#2A5696</color>
     <color name="greenTextColor">#01C404</color>
     <color name="whiteTextColor">@android:color/white</color>
     <color name="redTextColor">#ff041d</color>

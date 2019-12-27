@@ -21,6 +21,7 @@ import dagger.android.AndroidInjectionModule;
         NetworkModule.class,
         ActivityModule.class,
         FragmentModule.class,
+        ViewModelModule.class,
         MpScannerRepoModule.class
 
 })

@@ -29,6 +29,10 @@ public class Variable implements Parcelable {
     @Expose
     private Integer defaultValue;
 
+    public List<Double> getValues() {
+        return values;
+    }
+
     @SerializedName("values")
     @Expose
     private List<Double> values = null;

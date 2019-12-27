@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,21 +19,16 @@ import com.mp.stockscanner.base.Status;
 import com.mp.stockscanner.models.StockScanner;
 import com.mp.stockscanner.scanner.listener.StockScannerListener;
 import com.mp.stockscanner.scanner.repo.MainViewModel;
-import com.mp.stockscanner.scanner.repo.MpScannerRepository;
 
 import java.util.Objects;
 
 import javax.inject.Inject;
 
 public class StockListingFragment extends BaseAppCompactFragment implements StockScannerListener {
-
-
+    @Inject
     MainViewModel mainViewModel;
 
-    RecyclerView recyclerView;
-
-    @Inject
-    MpScannerRepository mpScannerRepository;
+    private RecyclerView recyclerView;
 
     public static StockListingFragment newInstance() {
         return new StockListingFragment();
@@ -50,8 +44,6 @@ public class StockListingFragment extends BaseAppCompactFragment implements Stoc
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
-//
         return view;
 
     }
@@ -59,8 +51,6 @@ public class StockListingFragment extends BaseAppCompactFragment implements Stoc
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mainViewModel = getViewModel();
-        mainViewModel.set(mpScannerRepository);
 
         mainViewModel.getMutableLiveData().observe(this, arrayListResource -> {
             if (isSuccess(arrayListResource)) {
@@ -83,12 +73,6 @@ public class StockListingFragment extends BaseAppCompactFragment implements Stoc
         super.onActivityCreated(savedInstanceState);
 
     }
-
-
-    public MainViewModel getViewModel() {
-        return ViewModelProviders.of(this).get(MainViewModel.class);
-    }
-
     @Override
     public void onStockScanClicked(StockScanner stockScanner) {
 

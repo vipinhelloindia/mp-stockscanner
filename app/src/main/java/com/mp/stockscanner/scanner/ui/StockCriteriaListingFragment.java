@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +17,8 @@ import com.mp.stockscanner.R;
 import com.mp.stockscanner.models.StockScanner;
 import com.mp.stockscanner.models.Variable;
 import com.mp.stockscanner.scanner.listener.SpanClickListener;
+
+import java.util.Objects;
 
 public class StockCriteriaListingFragment extends Fragment implements SpanClickListener {
 
@@ -59,7 +63,11 @@ public class StockCriteriaListingFragment extends Fragment implements SpanClickL
 
     @Override
     public void onSpanClick(Variable variable) {
-
+        FragmentManager mFragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        FragmentTransaction ft = mFragmentManager.beginTransaction();
+        ft.addToBackStack("variable");
+        ft.add(R.id.container, VariableListingFragment.newInstance(variable));
+        ft.commitAllowingStateLoss();
     }
 
 }

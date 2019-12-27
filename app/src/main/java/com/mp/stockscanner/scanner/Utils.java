@@ -1,7 +1,9 @@
 package com.mp.stockscanner.scanner;
 
+import android.graphics.Color;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
@@ -23,7 +25,7 @@ final public class Utils {
 
     private static SpannableStringBuilder getBuilder(String text, HashMap<String, Variable> variableHashMap,
                                                      SpanClickListener spanClickListener) {
-        SpanableData spanableData = getSpanableData(text);
+        SpanableData spanableData = getSpanableData(text, variableHashMap);
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(spanableData.modifiedText);
         for (SpanableData.SpannableIndex spannableIndex : spanableData.spannableIndices) {
             ClickableSpan clickableSpan = new ClickableSpanListener(spannableIndex.key, variableHashMap, spanClickListener);
@@ -56,8 +58,12 @@ final public class Utils {
     }
 
     public static void setSpanable(TextView nameView, Criterium stockScanner, SpanClickListener spanClickListener) {
-        SpannableStringBuilder spannableStringBuilder = getBuilder(stockScanner.getText(), stockScanner.getVariable(), spanClickListener);
-        nameView.setText(spannableStringBuilder);
+        try {
+            SpannableStringBuilder spannableStringBuilder = getBuilder(stockScanner.getText(), stockScanner.getVariable(), spanClickListener);
+            nameView.setText(spannableStringBuilder);
+        } catch (Exception exce) {
+            exce.printStackTrace();
+        }
     }
 
     public enum ColorType {
@@ -93,9 +99,17 @@ final public class Utils {
             }
 
         }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setUnderlineText(false);
+            ds.setColor(Color.parseColor("#2A5696"));
+        }
     }
 
-    private static SpanableData getSpanableData(String text) {
+
+    private static SpanableData getSpanableData(String text, HashMap<String, Variable> variableHashMap) {
         SpanableData spanableData = new SpanableData();
         spanableData.spannableIndices = new ArrayList<>();
         StringBuilder stringBuilder = new StringBuilder();
@@ -105,42 +119,71 @@ final public class Utils {
             spanableData.modifiedText = text;
             return spanableData;
         }
+        outer:
         while (true) {
             int tempStartIndex = startIndex;
             startIndex = text.indexOf("$", startIndex);
             if (startIndex == -1) {
-                stringBuilder.append(text.substring(tempStartIndex + 1, text.length()));
+                stringBuilder.append(text.substring(tempStartIndex, text.length()));
                 break;
             }
             String subString = text.substring(endIndex, startIndex);
             stringBuilder.append(subString);
 
-            int tempIndex = startIndex;
-            while (tempIndex < text.length()) {
-                tempIndex++;
-                if (!Character.isDigit(text.charAt(tempIndex))) {
-                    if (tempIndex - startIndex > 1) {
-                        stringBuilder.append("(");
-                        String key = text.substring(startIndex, tempIndex);
-                        stringBuilder.append(key);
-                        stringBuilder.append(")");
-                        SpanableData.SpannableIndex spannableIndex = new SpanableData.SpannableIndex();
-                        spannableIndex.start = startIndex + spanableData.spannableIndices.size();
-                        spannableIndex.end = tempIndex + 2;
-                        spannableIndex.key = key;
-                        spanableData.spannableIndices.add(spannableIndex);
-
+            tempStartIndex = startIndex + 1;
+            while (tempStartIndex < text.length()) {
+                //find if Digit and contains in our map as key
+                if (!Character.isDigit(text.charAt(tempStartIndex))) {
+                    String key = text.substring(startIndex, tempStartIndex);
+                    //condition for valid key and min length
+                    if (canAddSpanableIndex(tempStartIndex, startIndex, key, variableHashMap)) {
+                        addSpannableIndex(stringBuilder, spanableData, key, variableHashMap);
                     } else {
-                        stringBuilder.append(text.substring(startIndex, tempIndex));
+                        stringBuilder.append(key);
                     }
-                    endIndex = tempIndex;
-                    startIndex++;
-                    break;
+                    startIndex = tempStartIndex;
+                    endIndex = startIndex;
+                    continue outer;
                 }
+                tempStartIndex++;
             }
+            String key = text.substring(startIndex, tempStartIndex);
+            if (canAddSpanableIndex(tempStartIndex, startIndex, key, variableHashMap)) {
+                addSpannableIndex(stringBuilder, spanableData, key, variableHashMap);
+            }
+            startIndex = tempStartIndex;
+            endIndex = startIndex;
         }
+
         spanableData.modifiedText = stringBuilder.toString();
         return spanableData;
+    }
+
+    private static boolean canAddSpanableIndex(int tempStartIndex, int startIndex,
+                                               String key, HashMap<String, Variable> variableHashMap) {
+        return tempStartIndex - startIndex > 0 && variableHashMap.containsKey(key);
+    }
+
+    private static void addSpannableIndex(StringBuilder stringBuilder, SpanableData spanableData,
+                                          String key, HashMap<String, Variable> variableHashMap) {
+        Variable variable = variableHashMap.get(key);
+
+        SpanableData.SpannableIndex spannableIndex = new SpanableData.SpannableIndex();
+        spannableIndex.start = stringBuilder.length();
+        spannableIndex.key = key;
+
+        stringBuilder.append("(");
+        if (variable != null) {
+            if (variable.getValues() != null && variable.getValues().size() > 0) {
+                stringBuilder.append(variable.getValues().get(0));
+            } else {
+                stringBuilder.append(variable.getDefaultValue());
+            }
+        }
+        stringBuilder.append(")");
+
+        spannableIndex.end = stringBuilder.length();
+        spanableData.spannableIndices.add(spannableIndex);
     }
 
     static class SpanableData {

@@ -20,8 +20,6 @@ public class MainViewModel extends BaseViewModel {
 
     protected MutableLiveData<Resource<ArrayList<StockScanner>>> mutableLiveData = new MutableLiveData<>();
 
-    public MainViewModel() {
-    }
 
     @Inject
     public MainViewModel(MpScannerRepository mpScannerRepository) {
